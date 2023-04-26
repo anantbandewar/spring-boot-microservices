@@ -19,11 +19,11 @@ public class MovieCatalogService {
     public Response getCatalog(String userId) {
 
         Response response = new Response(userId, new ArrayList<>());
-        RatingsData ratingsData = restTemplate.getForObject("http://localhost:8083/ratings/users/" + userId, RatingsData.class);
+        RatingsData ratingsData = restTemplate.getForObject("http://RATINGS-DATA-SERVICE/ratings/users/" + userId, RatingsData.class);
 
         response.setMovies(
             ratingsData.getRatings().stream().map(rating -> {
-                Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
+                Movie movie = restTemplate.getForObject("http://MOVIE-INFO-SERVICE/movies/" + rating.getMovieId(), Movie.class);
                 return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
             }).collect(Collectors.toList())
         );
