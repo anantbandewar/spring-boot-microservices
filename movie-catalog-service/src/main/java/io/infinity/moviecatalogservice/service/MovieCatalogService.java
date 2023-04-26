@@ -1,18 +1,34 @@
 package io.infinity.moviecatalogservice.service;
 
-import io.infinity.moviecatalogservice.dto.CatalogItem;
+import io.infinity.moviecatalogservice.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieCatalogService {
 
-    public List<CatalogItem> getCatalog(String userId) {
-        return Collections.singletonList(
-                new CatalogItem("The Night Manager", "The story of a night manager", 4)
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public Response getCatalog(String userId) {
+
+        Response response = new Response(userId, new ArrayList<>());
+        RatingsData ratingsData = restTemplate.getForObject("http://localhost:8083/ratings/users/" + userId, RatingsData.class);
+
+        response.setMovies(
+            ratingsData.getRatings().stream().map(rating -> {
+                Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
+                return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
+            }).collect(Collectors.toList())
         );
+
+        return response;
     }
 
 }

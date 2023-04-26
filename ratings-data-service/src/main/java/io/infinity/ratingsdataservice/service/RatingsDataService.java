@@ -1,16 +1,16 @@
 package io.infinity.ratingsdataservice.service;
 
 import io.infinity.ratingsdataservice.dto.Rating;
+import io.infinity.ratingsdataservice.dto.Response;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.List;
 
 @Service
 public class RatingsDataService {
 
-    public List<Rating> getUserRating(int userId) {
-        return Collections.singletonList(new Rating(userId, 100, 4));
+    public Response getUserRating(String userId) {
+        return new Response(Collections.singletonList(new Rating(userId, 100, 4)));
     }
 
 }

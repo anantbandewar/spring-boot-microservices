@@ -1,6 +1,7 @@
 package io.infinity.moviecatalogservice.controller;
 
 import io.infinity.moviecatalogservice.dto.CatalogItem;
+import io.infinity.moviecatalogservice.dto.Response;
 import io.infinity.moviecatalogservice.service.MovieCatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class MovieCatalogController {
     private MovieCatalogService service;
 
     @GetMapping("/{userId}")
-    public List<CatalogItem> catalog(@PathVariable("userId") String userId) {
+    public Response catalog(@PathVariable("userId") String userId) {
         return service.getCatalog(userId);
     }
 
