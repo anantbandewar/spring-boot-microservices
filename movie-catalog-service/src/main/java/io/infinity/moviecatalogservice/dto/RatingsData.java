@@ -10,5 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RatingsData {
+    private String userId;
     private List<Rating> ratings;
 }
