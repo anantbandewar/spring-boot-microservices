@@ -22,6 +22,13 @@ public class MovieInfoServiceClient {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
             @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
             @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
+        },
+
+        // Bulkhead pattern implementation
+        threadPoolKey = "movieInfoServicePool",
+        threadPoolProperties = {
+            @HystrixProperty(name = "coreSize", value = "20"),
+            @HystrixProperty(name = "maxQueueSize", value = "10")
         }
     )
     public CatalogItem getMovieDetails(Rating rating) {
